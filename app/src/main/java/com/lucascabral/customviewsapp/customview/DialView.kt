@@ -4,7 +4,11 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import android.view.accessibility.AccessibilityNodeInfo
 import androidx.core.content.withStyledAttributes
+import androidx.core.view.AccessibilityDelegateCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.lucascabral.customviewsapp.R
 import kotlin.math.cos
 import kotlin.math.min
@@ -58,6 +62,20 @@ class DialView @JvmOverloads constructor(
             fanSpeedMaxColor = getColor(R.styleable.DialView_fanColor3, 0)
         }
         updateContentDescription()
+
+        ViewCompat.setAccessibilityDelegate(this, object : AccessibilityDelegateCompat() {
+            override fun onInitializeAccessibilityNodeInfo(
+                host: View,
+                info: AccessibilityNodeInfoCompat
+            ) {
+                super.onInitializeAccessibilityNodeInfo(host, info)
+                val customClick = AccessibilityNodeInfoCompat.AccessibilityActionCompat(
+                    AccessibilityNodeInfo.ACTION_CLICK,
+                    context.getString(if (fanSpeed != FanSpeed.HIGH) R.string.change else R.string.reset)
+                )
+                info.addAction(customClick)
+            }
+        })
     }
 
     override fun performClick(): Boolean {
