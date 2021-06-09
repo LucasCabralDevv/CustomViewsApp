@@ -2,4 +2,5 @@
 <resources>
     <dimen name="main_margin_start_end">8dp</dimen>
     <dimen name="main_margin_top">24dp</dimen>
+    <dimen name="fan_dimen">200dp</dimen>
 </resources>
